@@ -1,12 +1,19 @@
 USE Projeto_SAD;
 GO
 
+
 CREATE SCHEMA oltp;
 GO
 
 CREATE TABLE oltp.categoria(
     id INT IDENTITY(1,1) PRIMARY KEY,
     nome VARCHAR(45) NOT NULL
+);
+GO
+
+CREATE TABLE oltp.tema(
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nome_tema VARCHAR(45) NOT NULL
 );
 GO
 
@@ -47,7 +54,11 @@ CREATE TABLE oltp.produto(
     id INT IDENTITY(1,1) PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     preco_venda DECIMAL(10,2) NOT NULL,
-    estoque_atual INT NOT NULL DEFAULT 0
+    estoque_atual INT NOT NULL DEFAULT 0,
+    categoria_id INT,
+
+    CONSTRAINT FK_produto_categoria FOREIGN KEY (categoria_id) REFERENCES oltp.categoria(id)
+
 );
 GO
 
@@ -75,7 +86,7 @@ CREATE TABLE oltp.producao(
 );
 GO
 
--- 3. Tabelas de Relacionamento (Muitos para Muitos)
+
 CREATE TABLE oltp.producao_has_insumo(
     producao_id INT NOT NULL,
     insumo_id INT NOT NULL,
@@ -107,11 +118,11 @@ CREATE TABLE oltp.venda_has_produto(
 );
 GO
 
-CREATE TABLE oltp.produto_has_categoria(
-    produto_id INT NOT NULL,
+CREATE TABLE oltp.categoria_has_tema(
+    tema_id INT NOT NULL,
     categoria_id INT NOT NULL,
-    PRIMARY KEY (categoria_id, produto_id),
-    CONSTRAINT FK_PHC_Produto FOREIGN KEY (produto_id) REFERENCES oltp.produto(id),
+    PRIMARY KEY (categoria_id, tema_id),
+    CONSTRAINT FK_PHC_Tema FOREIGN KEY (tema_id) REFERENCES oltp.tema(id),
     CONSTRAINT FK_PHC_Categoria FOREIGN KEY (categoria_id) REFERENCES oltp.categoria(id)
 );
 GO
