@@ -1,7 +1,6 @@
 USE Projeto_SAD;
 GO
 
-
 CREATE SCHEMA oltp;
 GO
 
@@ -56,9 +55,10 @@ CREATE TABLE oltp.produto(
     preco_venda DECIMAL(10,2) NOT NULL,
     estoque_atual INT NOT NULL DEFAULT 0,
     categoria_id INT,
+    tema_id INT,
 
-    CONSTRAINT FK_produto_categoria FOREIGN KEY (categoria_id) REFERENCES oltp.categoria(id)
-
+    CONSTRAINT FK_produto_categoria FOREIGN KEY (categoria_id) REFERENCES oltp.categoria(id),
+    CONSTRAINT FK_produto_tema FOREIGN KEY (tema_id) REFERENCES oltp.tema(id)
 );
 GO
 
@@ -115,14 +115,5 @@ CREATE TABLE oltp.venda_has_produto(
     PRIMARY KEY (produto_id, venda_id),
     CONSTRAINT FK_VHP_Produto FOREIGN KEY (produto_id) REFERENCES oltp.produto(id),
     CONSTRAINT FK_VHP_Venda FOREIGN KEY (venda_id) REFERENCES oltp.venda(id)
-);
-GO
-
-CREATE TABLE oltp.categoria_has_tema(
-    tema_id INT NOT NULL,
-    categoria_id INT NOT NULL,
-    PRIMARY KEY (categoria_id, tema_id),
-    CONSTRAINT FK_PHC_Tema FOREIGN KEY (tema_id) REFERENCES oltp.tema(id),
-    CONSTRAINT FK_PHC_Categoria FOREIGN KEY (categoria_id) REFERENCES oltp.categoria(id)
 );
 GO
