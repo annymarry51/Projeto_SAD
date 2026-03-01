@@ -1,4 +1,0 @@
-CREATE DATABASE Projeto_SAD;
-GO
-USE Projeto_SAD;
-GO
